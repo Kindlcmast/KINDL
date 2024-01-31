@@ -1,0 +1,51 @@
+#include <iostream>
+#include "hello.h"
+
+
+void hello(const char* name, int count) { 
+    // Krav: hello is responsible for printing the hello world-string on stdout with the following semantics;
+    if (count == 0) {
+        return; // Krav: If the value zero is passed as the second parameter, nothing shall be printed.
+    }
+
+
+    std::cout << "Hello, "; 
+    
+    for (int i = 0; i < count; i=i+1) { //loop som skriver ut name count gånger 
+        std::cout << name; //skriver ut namn
+        if (i< count-1){
+        std::cout << " ";} // skriver ut ett mellanslag
+    }
+    std::cout << "!" << std::endl; //avslutar  utskriften med ! och en ny rad
+}
+
+std::pair<const char*, int> parse_args(int argc, char* argv[]) {
+    if (argc > 3) {
+        std::cerr << "error: Too many arguments!" << std::endl;
+        return std::make_pair("", -1);
+    } else if (argc > 1) {
+        const char* name = argv[1];
+        int count = 1;
+        if (argc > 2) {
+            // om ett andra input är givet
+            if (argv[2][0] == '0' && argv[2][1] == '\0') {
+                
+
+                count = 0;
+            } else {
+                // kobnverterar till int
+                count = std::atoi(argv[2]);
+
+                // om inpt är något annat än possetiva siffror kommer det vlir eeer
+                if (count <= 0) {
+                    std::cerr << "error: 2nd argument must be a valid non-negative integer!" << std::endl;
+                    return std::make_pair("", -1);
+                }
+            }
+        }
+
+        return std::make_pair(name, count);
+    } else {
+        return std::make_pair("world", 1);
+    }
+}
